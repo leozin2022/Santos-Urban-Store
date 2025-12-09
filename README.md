@@ -1,11 +1,30 @@
-<div align="center">
+# Santos Urban Store
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Este projeto é uma Single Page Application (SPA) React adaptada para alto desempenho visual, simulando a estética urbana solicitada.
 
-  <h1>Built with AI Studio</h2>
+## 1. Instruções de Instalação
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+Como este ambiente é uma prévia React, as dependências são gerenciadas automaticamente. Se for rodar localmente:
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+```bash
+npm install react react-dom lucide-react papaparse framer-motion clsx tailwind-merge
+npm install -D typescript @types/react @types/node @types/papaparse autoprefixer postcss tailwindcss
+```
 
-</div>
+## 2. Estrutura da Planilha (Google Sheets)
+
+Para que o site funcione corretamente com sua planilha, preencha a primeira linha com estes nomes exatos (tudo minúsculo):
+
+| id | nome | marca | preco | imagem | categoria |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Camiseta Oversized | Nike | 129.90 | https://... | Wear |
+| 2 | Shape 8.0 | Santa Cruz | 350.00 | https://... | Shape |
+
+**Categorias Automáticas:** O site cria automaticamente o menu com base no que você digitar na coluna `categoria`.
+Exemplo: Se você adicionar um produto com categoria "Bonés", um botão "Bonés" aparecerá automaticamente no site.
+
+**Como conectar:**
+Já configurei o código para ler o link que você enviou. Apenas certifique-se de que a planilha está visível para **"Qualquer pessoa com o link"** no botão Compartilhar.
+
+## Observação sobre Next.js
+Este código foi gerado como uma aplicação React (Vite/CRA compatible) para garantir a visualização imediata neste ambiente. Para migrar para Next.js, basta mover o conteúdo de `App.tsx` para `app/page.tsx`.
