@@ -1,75 +1,166 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Santos Urban Store</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              display: ['"Rubik Wet Paint"', 'cursive'],
-              bubble: ['"Modak"', 'cursive'], // New font for the header logo
-            },
-            colors: {
-              urban: {
-                950: '#0a0a0a',
-                900: '#121212',
-                800: '#1f1f1f',
-              }
-            }
-          },
-        },
-      }
-    </script>
-    <!-- Google Fonts: Inter, Rubik Wet Paint, and Modak (for the KNZ style) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Modak&family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
-    <style>
-      body {
-        background-color: #ffffff;
-        background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
-        background-size: 20px 20px; /* Subtle dot pattern for texture on white */
-        color: #000000;
-        min-height: 100vh;
-      }
+<script type="module">
+      import React, { useState, useEffect } from 'react';
+      import { createRoot } from 'react-dom/client';
+      import { ShoppingBag, Menu, X, ArrowRight, Star } from 'lucide-react';
+      import { motion, AnimatePresence } from 'framer-motion';
 
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f5f5f5; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #000000; 
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #333333; 
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "papaparse": "https://aistudiocdn.com/papaparse@^5.5.3",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^11.3.8",
-    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.1"
-  }
-}
-</script>
-</head>
-  <body>
-    <div id="root"></div>
-  </body>
-</html>
+      // Mock Data (Since we aren't using a CSV file yet)
+      const MOCK_PRODUCTS = [
+        { id: 1, name: "URBAN TEE V1", price: "R$ 89,90", category: "T-Shirts", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=500" },
+        { id: 2, name: "STREET HOODIE", price: "R$ 199,90", category: "Hoodies", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=500" },
+        { id: 3, name: "CARGO PANTS", price: "R$ 159,90", category: "Pants", image: "https://images.unsplash.com/photo-1517438476312-10d79c077509?auto=format&fit=crop&q=80&w=500" },
+        { id: 4, name: "GRAFFITI CAP", price: "R$ 59,90", category: "Accessories", image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=500" },
+      ];
+
+      const App = () => {
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const [cartCount, setCartCount] = useState(0);
+
+        return (
+          <div className="min-h-screen font-sans selection:bg-black selection:text-white">
+            
+            {/* Navbar */}
+            <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                  {/* Logo using the 'bubble' font (Modak) defined in your config */}
+                  <div className="flex-shrink-0 flex items-center">
+                    <h1 className="font-bubble text-3xl tracking-wider cursor-pointer hover:scale-105 transition-transform">
+                      SANTOS<span className="text-gray-500">URBAN</span>
+                    </h1>
+                  </div>
+
+                  {/* Desktop Menu */}
+                  <div className="hidden md:flex items-center space-x-8">
+                    <a href="#" className="text-sm font-bold tracking-widest hover:text-gray-500 transition-colors">SHOP</a>
+                    <a href="#" className="text-sm font-bold tracking-widest hover:text-gray-500 transition-colors">COLLECTIONS</a>
+                    <a href="#" className="text-sm font-bold tracking-widest hover:text-gray-500 transition-colors">ABOUT</a>
+                    <div className="relative cursor-pointer" onClick={() => setCartCount(c => c + 1)}>
+                      <ShoppingBag size={24} />
+                      {cartCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">
+                          {cartCount}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Mobile menu button */}
+                  <div className="md:hidden flex items-center">
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                      {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Menu */}
+              <AnimatePresence>
+                {isMenuOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="md:hidden bg-white border-b border-gray-200 overflow-hidden"
+                  >
+                    <div className="px-4 pt-2 pb-4 space-y-1">
+                      <a href="#" className="block px-3 py-2 text-base font-bold">SHOP</a>
+                      <a href="#" className="block px-3 py-2 text-base font-bold">COLLECTIONS</a>
+                      <a href="#" className="block px-3 py-2 text-base font-bold">ABOUT</a>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </nav>
+
+            {/* Hero Section */}
+            <header className="relative pt-24 pb-12 lg:pt-32 lg:pb-24 overflow-hidden">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <motion.div 
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.8 }}
+                  className="text-center"
+                >
+                  <h2 className="font-display text-4xl sm:text-6xl md:text-8xl mb-6 transform -rotate-2">
+                    STREETWEAR <br/><span className="text-stroke text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800" style={{WebkitTextStroke: '2px black'}}>REDEFINED</span>
+                  </h2>
+                  <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-600 font-light">
+                    Elevate your style with the raw essence of the streets. Santos Urban Store brings you the latest drops.
+                  </p>
+                  <div className="mt-8 flex justify-center gap-4">
+                    <button className="bg-black text-white px-8 py-3 font-bold hover:bg-gray-800 transition-colors flex items-center gap-2">
+                      SHOP NOW <ArrowRight size={18} />
+                    </button>
+                    <button className="border-2 border-black px-8 py-3 font-bold hover:bg-black hover:text-white transition-colors">
+                      VIEW LOOKBOOK
+                    </button>
+                  </div>
+                </motion.div>
+              </div>
+            </header>
+
+            {/* Product Grid */}
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="flex justify-between items-end mb-8">
+                <h3 className="font-display text-3xl">LATEST DROPS</h3>
+                <span className="text-sm font-bold border-b-2 border-black cursor-pointer">VIEW ALL</span>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6">
+                {MOCK_PRODUCTS.map((product) => (
+                  <motion.div 
+                    key={product.id}
+                    whileHover={{ y: -10 }}
+                    className="group relative"
+                  >
+                    <div className="aspect-[3/4] w-full overflow-hidden bg-gray-200 relative">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity"
+                      />
+                      <div className="absolute top-2 right-2 bg-white px-2 py-1 text-xs font-bold">
+                        NEW
+                      </div>
+                    </div>
+                    <div className="mt-4 flex justify-between">
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">
+                          <a href="#">
+                            <span aria-hidden="true" className="absolute inset-0" />
+                            {product.name}
+                          </a>
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-500">{product.category}</p>
+                      </div>
+                      <p className="text-lg font-medium text-gray-900">{product.price}</p>
+                    </div>
+                    <button className="mt-4 w-full bg-black text-white py-2 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                      ADD TO CART
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
+            </main>
+
+            {/* Footer */}
+            <footer className="bg-black text-white py-12 mt-12">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+                <h2 className="font-bubble text-4xl mb-4 md:mb-0">SANTOS<span className="text-gray-500">URBAN</span></h2>
+                <div className="flex space-x-6 text-sm text-gray-400">
+                  <a href="#" className="hover:text-white">Privacy</a>
+                  <a href="#" className="hover:text-white">Terms</a>
+                  <a href="#" className="hover:text-white">Instagram</a>
+                </div>
+                <p className="text-gray-500 text-xs mt-4 md:mt-0">© 2025 Santos Urban Store.</p>
+              </div>
+            </footer>
+
+          </div>
+        );
+      };
+
+      const root = createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
