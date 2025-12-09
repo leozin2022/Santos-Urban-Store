@@ -2,7 +2,9 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./*.{js,ts,jsx,tsx}",           // <--- Adicionado: Procura arquivos soltos na raiz (App.tsx, index.tsx)
+    "./components/**/*.{js,ts,jsx,tsx}", // <--- Adicionado: Procura dentro da pasta components
+    "./src/**/*.{js,ts,jsx,tsx}"     // Mantém caso você crie a pasta src no futuro
   ],
   theme: {
     extend: {
