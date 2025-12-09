@@ -2,9 +2,8 @@
 export default {
   content: [
     "./index.html",
-    "./*.{js,ts,jsx,tsx}",           // <--- Adicionado: Procura arquivos soltos na raiz (App.tsx, index.tsx)
-    "./components/**/*.{js,ts,jsx,tsx}", // <--- Adicionado: Procura dentro da pasta components
-    "./src/**/*.{js,ts,jsx,tsx}"     // Mantém caso você crie a pasta src no futuro
+    "./*.{js,ts,jsx,tsx}",                // <--- IMPORTANTE: Pega arquivos soltos na raiz (App.tsx, index.tsx)
+    "./components/**/*.{js,ts,jsx,tsx}",  // <--- Pega tudo dentro da pasta components
   ],
   theme: {
     extend: {
@@ -13,6 +12,13 @@ export default {
         display: ['"Rubik Wet Paint"', 'cursive'],
         bubble: ['"Modak"', 'cursive'],
       },
+      colors: {
+        urban: {
+          950: '#0a0a0a',
+          900: '#121212',
+          800: '#1f1f1f',
+        }
+      }
     },
   },
   plugins: [],
