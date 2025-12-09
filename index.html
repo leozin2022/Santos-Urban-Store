@@ -27,8 +27,8 @@
       "imports": {
         "react": "https://esm.sh/react@18.2.0",
         "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-        "lucide-react": "https://esm.sh/lucide-react@0.344.0?deps=react@18.2.0",
-        "framer-motion": "https://esm.sh/framer-motion@10.18.0?deps=react@18.2.0,react-dom@18.2.0"
+        "lucide-react": "https://esm.sh/lucide-react@0.292.0?deps=react@18.2.0",
+        "framer-motion": "https://esm.sh/framer-motion@10.16.4?deps=react@18.2.0,react-dom@18.2.0"
       }
     }
     </script>
@@ -40,7 +40,12 @@
         background-color: #ffffff;
         background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
         background-size: 20px 20px;
+        color: black;
       }
+      /* Remove scrollbar feia */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #f5f5f5; }
+      ::-webkit-scrollbar-thumb { background: #000000; border-radius: 4px; }
     </style>
   </head>
   
@@ -48,12 +53,12 @@
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
-      // Agora importamos pelos NOMES definidos no importmap lá em cima
       import React, { useState } from 'react';
       import { createRoot } from 'react-dom/client';
       import { ShoppingBag, Menu, X, ArrowRight } from 'lucide-react';
       import { motion, AnimatePresence } from 'framer-motion';
 
+      // Dados Fictícios
       const MOCK_PRODUCTS = [
         { id: 1, name: "URBAN TEE V1", price: "R$ 89,90", category: "T-Shirts", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=500" },
         { id: 2, name: "STREET HOODIE", price: "R$ 199,90", category: "Hoodies", image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=500" },
@@ -66,18 +71,20 @@
         const [cartCount, setCartCount] = useState(0);
 
         return (
-          <div className="min-h-screen font-sans selection:bg-black selection:text-white text-black">
+          <div className="min-h-screen font-sans">
             
             {/* Navbar */}
-            <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+            <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 text-black">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
+                  {/* Logo */}
                   <div className="flex-shrink-0 flex items-center">
                     <h1 className="font-bubble text-3xl tracking-wider cursor-pointer hover:scale-105 transition-transform">
                       SANTOS<span className="text-gray-500">URBAN</span>
                     </h1>
                   </div>
 
+                  {/* Menu Desktop */}
                   <div className="hidden md:flex items-center space-x-8">
                     <a href="#" className="text-sm font-bold tracking-widest hover:text-gray-500 transition-colors">SHOP</a>
                     <a href="#" className="text-sm font-bold tracking-widest hover:text-gray-500 transition-colors">COLLECTIONS</a>
@@ -91,6 +98,7 @@
                     </div>
                   </div>
 
+                  {/* Botão Mobile */}
                   <div className="md:hidden flex items-center">
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
                       {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -99,6 +107,7 @@
                 </div>
               </div>
 
+              {/* Menu Mobile */}
               <AnimatePresence>
                 {isMenuOpen && (
                   <motion.div 
@@ -116,7 +125,7 @@
               </AnimatePresence>
             </nav>
 
-            {/* Hero */}
+            {/* Hero Section */}
             <header className="relative pt-24 pb-12 lg:pt-32 lg:pb-24 overflow-hidden px-4">
               <div className="max-w-7xl mx-auto relative z-10 text-center">
                 <motion.div 
@@ -124,7 +133,7 @@
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8 }}
                 >
-                  <h2 className="font-display text-5xl sm:text-7xl md:text-8xl mb-6 transform -rotate-2 leading-tight">
+                  <h2 className="font-display text-5xl sm:text-7xl md:text-8xl mb-6 transform -rotate-2 leading-tight text-black">
                     STREETWEAR <br/>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-black to-gray-800" style={{WebkitTextStroke: '1px black'}}>
                       REDEFINED
@@ -142,9 +151,9 @@
               </div>
             </header>
 
-            {/* Products */}
+            {/* Grid de Produtos */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-              <div className="flex justify-between items-end mb-8">
+              <div className="flex justify-between items-end mb-8 text-black">
                 <h3 className="font-display text-3xl">NOVIDADES</h3>
                 <span className="text-sm font-bold border-b-2 border-black cursor-pointer">VER TUDO</span>
               </div>
@@ -159,28 +168,9 @@
                     <div className="aspect-[3/4] w-full overflow-hidden bg-gray-200 relative">
                       <img src={product.image} alt={product.name} className="h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity" />
                     </div>
-                    <div className="mt-4 flex justify-between">
+                    <div className="mt-4 flex justify-between text-black">
                       <div>
                         <h3 className="text-lg font-bold">{product.name}</h3>
                         <p className="text-sm text-gray-500">{product.category}</p>
                       </div>
-                      <p className="text-lg font-medium">{product.price}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </main>
-
-            <footer className="bg-black text-white py-12 mt-12 text-center">
-              <h2 className="font-bubble text-4xl mb-4">SANTOS<span className="text-gray-500">URBAN</span></h2>
-              <p className="text-gray-500 text-xs">© 2025 Santos Urban Store.</p>
-            </footer>
-          </div>
-        );
-      };
-
-      const root = createRoot(document.getElementById('root'));
-      root.render(<App />);
-    </script>
-  </body>
-</html>
+                      <p className
